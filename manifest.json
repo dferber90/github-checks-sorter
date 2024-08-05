@@ -10,5 +10,7 @@
       "js": ["script.js"]
     }
   ],
-  "icons": {}
+  "icons": {
+    "128": "icon128.png"
+  }
 }
