@@ -6,6 +6,7 @@ function getItemStatus(statusItem) {
   if (icon.classList.contains("color-fg-danger")) return "error";
   if (icon.classList.contains("color-fg-success")) return "success";
   if (icon.classList.contains("neutral-check")) return "skipped";
+  if (icon.classList.contains("hx_dot-fill-pending-icon")) return "queued";
   return "other";
 }
 
@@ -25,7 +26,7 @@ function sortStatusItems(container) {
 
     // First, sort by status
     if (statusA !== statusB) {
-      const order = ["error", "success", "skipped", "other"];
+      const order = ["error", "queued", "success", "skipped", "other"];
       return order.indexOf(statusA) - order.indexOf(statusB);
     }
 
