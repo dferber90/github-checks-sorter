@@ -10,6 +10,12 @@ This extension has no UI and no settings. It only sorts the list of status check
 
 ## Installation
 
+### Install using Chrome Web Store
+
+See the listing on the [Chrome Web Store](https://chromewebstore.google.com/detail/github-pr-status-sorter/impfkakcdbkmdebcchmmgcficdajjjcd) and install from there.
+
+### Install manually
+
 1. Download [this zip](https://github.com/dferber90/github-checks-sorter/archive/refs/heads/main.zip)
 2. Extract it to a folder
 3. Open [chrome://extensions](chrome://extensions)
