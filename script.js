@@ -62,12 +62,17 @@ function waitForElm(selector) {
   });
 }
 
+/**
+ * @type MutationObserver
+ */
+let observer;
 async function main() {
   const selector = ".js-updatable-content-preserve-scroll-position";
   const container = await waitForElm(selector);
+  if (observer) observer.disconnect();
 
   // Create a MutationObserver instance
-  const observer = new MutationObserver((mutations) => {
+  observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === "childList") {
         // If children have been added or removed, re-sort the list
@@ -84,3 +89,16 @@ async function main() {
 }
 
 main();
+
+// Resort the checks in case the user navigates away and back to the details page
+let currentUrl = window.location.href;
+
+function checkForUrlChange() {
+  if (window.location.href === currentUrl) return;
+  currentUrl = window.location.href;
+  main();
+}
+
+const intervalId = setInterval(checkForUrlChange, 500);
+
+window.addEventListener("unload", () => clearInterval(intervalId));
