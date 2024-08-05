@@ -1,4 +1,4 @@
-# GitHub PR Status Sorter
+# GitHub Checks Sorter
 
 A Chrome extension to sort GitHub checks by status.
 
@@ -10,7 +10,7 @@ This extension has no UI and no settings. It only sorts the list of status check
 
 ## Installation
 
-1. Download [this zip](https://github.com/dferber90/github-pr-status-sorter/archive/refs/heads/main.zip)
+1. Download [this zip](https://github.com/dferber90/github-checks-sorter/archive/refs/heads/main.zip)
 2. Extract it to a folder
 3. Open [chrome://extensions](chrome://extensions)
 4. Enter developer mode

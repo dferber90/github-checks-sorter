@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "GitHub PR Status Sorter",
+  "name": "GitHub Checks Sorter",
   "version": "1.0",
   "description": "Sorts failing status checks to the top on GitHub pull request pages",
   "permissions": ["activeTab"],

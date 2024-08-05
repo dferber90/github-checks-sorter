@@ -68,7 +68,6 @@ async function main() {
 
   // Create a MutationObserver instance
   const observer = new MutationObserver((mutations) => {
-    console.log("got mutations", mutations);
     mutations.forEach((mutation) => {
       if (mutation.type === "childList") {
         // If children have been added or removed, re-sort the list
