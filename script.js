@@ -3,6 +3,8 @@ const config = { childList: true, subtree: true };
 // Function to determine the status of an item
 function getItemStatus(statusItem) {
   const icon = statusItem.querySelector(".merge-status-icon svg");
+
+  if (icon.classList.contains("anim-rotate")) return "pending";
   if (icon.classList.contains("color-fg-danger")) return "error";
   if (icon.classList.contains("color-fg-success")) return "success";
   if (icon.classList.contains("neutral-check")) return "skipped";
@@ -26,7 +28,14 @@ function sortStatusItems(container) {
 
     // First, sort by status
     if (statusA !== statusB) {
-      const order = ["error", "other", "queued", "success", "skipped"];
+      const order = [
+        "error",
+        "pending",
+        "queued",
+        "success",
+        "skipped",
+        "other",
+      ];
       return order.indexOf(statusA) - order.indexOf(statusB);
     }
 
