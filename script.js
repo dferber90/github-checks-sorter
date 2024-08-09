@@ -26,7 +26,7 @@ function sortStatusItems(container) {
 
     // First, sort by status
     if (statusA !== statusB) {
-      const order = ["error", "queued", "success", "skipped", "other"];
+      const order = ["error", "other", "queued", "success", "skipped"];
       return order.indexOf(statusA) - order.indexOf(statusB);
     }
 
@@ -46,59 +46,15 @@ function sortStatusItems(container) {
   sortedItems.forEach((item) => container.appendChild(item));
 }
 
-function waitForElm(selector) {
-  return new Promise((resolve) => {
-    const element = document.querySelector(selector);
-    if (element) return resolve(element);
-
-    const observer = new MutationObserver((mutations) => {
-      if (document.querySelector(selector)) {
-        observer.disconnect();
-        resolve(document.querySelector(selector));
-      }
-    });
-
-    observer.observe(document.body, config);
-  });
-}
-
-/**
- * @type MutationObserver
- */
-let observer;
 async function main() {
-  const selector = ".js-updatable-content-preserve-scroll-position";
-  const container = await waitForElm(selector);
-  if (observer) observer.disconnect();
+  const selector =
+    ".merge-status-list.js-updatable-content-preserve-scroll-position";
 
-  // Create a MutationObserver instance
-  observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === "childList") {
-        // If children have been added or removed, re-sort the list
-        sortStatusItems(container);
-      }
-    });
-  });
+  const container = document.querySelector(selector);
+  if (!container) return;
 
-  // Initial sorting
   sortStatusItems(container);
-
-  // Start observing the target node for configured mutations
-  observer.observe(container, config);
 }
 
 main();
-
-// Resort the checks in case the user navigates away and back to the details page
-let currentUrl = window.location.href;
-
-function checkForUrlChange() {
-  if (window.location.href === currentUrl) return;
-  currentUrl = window.location.href;
-  main();
-}
-
-const intervalId = setInterval(checkForUrlChange, 500);
-
-window.addEventListener("unload", () => clearInterval(intervalId));
+setInterval(() => main(), 500);
