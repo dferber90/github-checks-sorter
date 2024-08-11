@@ -1,4 +1,19 @@
 const config = { childList: true, subtree: true };
+const selector =
+  ".merge-status-list.js-updatable-content-preserve-scroll-position";
+
+/**
+ * @type MutationObserver | null
+ */
+let observer = null;
+let mutating = false;
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // listen for messages sent from background.js
+  if (request.message === "url changed") main();
+});
+
+main();
 
 // Function to determine the status of an item
 function getItemStatus(statusItem) {
@@ -18,7 +33,9 @@ function isRequired(statusItem) {
 }
 
 // Function to sort status items
-function sortStatusItems(container) {
+function sortStatusItems() {
+  mutating = true;
+  const container = document.querySelector(selector);
   const statusItems = Array.from(container.children);
   const sortedItems = statusItems.sort((a, b) => {
     const statusA = getItemStatus(a);
@@ -33,8 +50,8 @@ function sortStatusItems(container) {
         "pending",
         "queued",
         "success",
-        "skipped",
         "other",
+        "skipped",
       ];
       return order.indexOf(statusA) - order.indexOf(statusB);
     }
@@ -53,17 +70,59 @@ function sortStatusItems(container) {
 
   // Add sorted items back to the container
   sortedItems.forEach((item) => container.appendChild(item));
+
+  setTimeout(() => {
+    mutating = false;
+  }, 250);
 }
 
-async function main() {
-  const selector =
-    ".merge-status-list.js-updatable-content-preserve-scroll-position";
+function waitForElm(selector) {
+  return new Promise((resolve) => {
+    if (document.querySelector(selector)) {
+      return resolve(document.querySelector(selector));
+    }
 
+    const globalObserver = new MutationObserver((mutations) => {
+      if (document.querySelector(selector)) {
+        globalObserver.disconnect();
+        resolve(document.querySelector(selector));
+      }
+    });
+
+    globalObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  });
+}
+
+function startObserving() {
   const container = document.querySelector(selector);
   if (!container) return;
 
-  sortStatusItems(container);
+  sortStatusItems();
+
+  observer = new MutationObserver((mutationList, o) => {
+    if (!mutating) sortStatusItems();
+  });
+
+  observer.observe(container, {
+    attributes: true,
+    childList: true,
+    subtree: true,
+  });
 }
 
-main();
-setInterval(() => main(), 500);
+function stopObserving() {
+  if (observer) observer.disconnect();
+}
+
+async function main() {
+  const shouldCheck = /\/pull\/\d+$/i.test(window.location.pathname);
+  if (shouldCheck) {
+    await waitForElm(selector);
+    startObserving();
+  } else {
+    stopObserving();
+  }
+}
