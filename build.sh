@@ -6,6 +6,8 @@ OUTPUT_ZIP="extension.zip"
 # List of files to include in the zip
 FILES_TO_ZIP="manifest.json script.js background.js icon128.png"
 
+rm $OUTPUT_ZIP
+
 # Check if all files exist
 for file in $FILES_TO_ZIP; do
     if [ ! -f "$file" ]; then

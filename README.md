@@ -25,4 +25,4 @@ See the listing on the [Chrome Web Store](https://chromewebstore.google.com/deta
 
 ## Privacy Policy
 
-This extension does not collect any data at all.
+This extension does not collect any data from the pages you visit. We do however use Google Analytics to track usage of the application itself as is standard practice in the Chrome Web Store ([ref](https://developer.chrome.com/docs/webstore/google-analytics)).
