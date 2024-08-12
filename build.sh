@@ -4,7 +4,7 @@
 OUTPUT_ZIP="extension.zip"
 
 # List of files to include in the zip
-FILES_TO_ZIP="manifest.json script.js icon128.png"
+FILES_TO_ZIP="manifest.json script.js background.js icon128.png"
 
 # Check if all files exist
 for file in $FILES_TO_ZIP; do
